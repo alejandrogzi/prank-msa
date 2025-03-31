@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Ari Loytynoja   *
+ *   Copyright (C) 2013 by Ari Loytynoja   *
  *   ari@ebi.ac.uk   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,39 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef READNEWICK_H
-#define READNEWICK_H
 
-/**
- * Reader for newick-format treefiles
- */
+#ifndef RAXMLANCESTORS_H
+#define RAXMLANCESTORS_H
 
-#include <string>
-#include <map>
-#include "treenode.h"
+#include "ancestralnode.h"
+#include "config.h"
+#include <sys/stat.h>
 
-class ReadNewick
+class RaxmlAncestors
 {
-    std::string s;
-    std::string root;
-    std::map<std::string,TreeNode*> nodes;
+    std::string raxmlpath;
 
-    bool is_number(const std::string& s)
-    {
-        std::string::const_iterator it = s.begin();
-        while (it != s.end() && std::isdigit(*it)) ++it;
-        return !s.empty() && it == s.end();
-    }
 public:
-    ReadNewick();
-    ~ReadNewick();
-
-    std::string readFile(const char* filename);
-    void buildTree(std::string s,std::map<std::string,TreeNode*>* nodes);
-    std::string getRoot()
-    {
-        return root;
-    }
+    RaxmlAncestors();
+    bool testExecutable();
+    bool inferAncestors(AncestralNode *root,map<string,string> *aseqs,string *atree,bool isDna);
 };
 
-#endif
+#endif // RAXMLANCESTORS_H
